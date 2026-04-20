@@ -15,6 +15,7 @@ type Product = {
 
 export default async function Home() {
   const products = await getProducts();
+  
   return (
     <div className="bg-[#DAE2E9]">
       <Hero />

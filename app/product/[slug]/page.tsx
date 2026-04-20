@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { client } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/sanityClient";
 import AddToCartBtn from "@/components/addToCartButton";
 
 // Typescript interface for better development

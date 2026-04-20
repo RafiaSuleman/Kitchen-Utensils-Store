@@ -15,13 +15,7 @@ const Navbar = () => {
         Kitchen<span className="text-[#751C1C]"> Utensils</span>
       </Link>
 
-      <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
-        <Link href="/shop" className="hover:text-[#751C1C] transition">Shop</Link>
-        <Link href="/about" className="hover:text-[#751C1C] transition">About</Link>
-      
-       <Link href="/contact" className="hover:text-[#751C1C] transition">Contact</Link>
-      </div>
-
+     
       <div className="flex items-center gap-5">
         <Link href="/cart" className="relative p-2 text-gray-700 hover:bg-gray-100 rounded-full transition">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

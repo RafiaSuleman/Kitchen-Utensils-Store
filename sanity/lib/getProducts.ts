@@ -1,4 +1,4 @@
-import { client } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/sanityClient";
 export const getProducts = async () => {
   const query = `*[_type == "product"]{
     name,

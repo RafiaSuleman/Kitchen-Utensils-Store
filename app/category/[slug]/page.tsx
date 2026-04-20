@@ -1,5 +1,5 @@
 
-import { client } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/sanityClient";
 import Image from "next/image";
 import Link from "next/link";
 type Product = {
@@ -9,11 +9,8 @@ type Product = {
   name: string;};
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
-
-  // ✅ DEBUG
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
-  console.log("Slug is:", slug);
 
   const products = await client.fetch(
     `*[_type == "product" && category == $slug]{
@@ -23,7 +20,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       "slug": slug.current
     }`,
     {
-      slug: slug, // ✅ MUST MATCH NAME
+      slug: slug,
     }
   );
 
