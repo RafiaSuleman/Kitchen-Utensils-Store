@@ -26,3 +26,47 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const orders = await client.fetch(`
+      *[_type == "order"] | order(orderDate desc) {
+        _id,
+        customerName,
+        email,
+        phone,
+        address,
+        items,
+        totalAmount,
+        status,
+        orderDate
+      }
+    `);
+
+    return NextResponse.json(orders);
+  } catch (error) {
+    console.error("GET ORDER ERROR:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to fetch orders" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const { orderId, status } = await req.json();
+
+    const updatedOrder = await client
+      .patch(orderId)
+      .set({ status })
+      .commit();
+
+    return NextResponse.json({ success: true, updatedOrder });
+  } catch (error) {
+    return NextResponse.json(
+     { error: error instanceof Error ? error.message : "Failed to update status" },
+      { status: 500 }
+    );
+  }
+}
