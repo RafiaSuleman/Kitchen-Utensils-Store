@@ -28,11 +28,10 @@ async function getProductDetails(slug: string): Promise<ProductDetail | null> {
 }
 
 export default async function ProductDetails({ params }: { params: Promise<{ slug: string }> }) {
-  // 1. Await params for Next.js 15 compatibility
+  
   const { slug } = await params;
   const product = await getProductDetails(slug);
 
-  // 2. Error handling if product not found
   if (!product) return notFound();
 
   return (

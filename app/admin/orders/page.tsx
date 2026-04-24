@@ -22,24 +22,43 @@ interface Order {
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
- 
- useEffect(() => {
-  const fetchOrders = async () => {
-    const res = await fetch("/api/order", {
-      cache: "no-store",
-    });
-
-    const data = await res.json();
-    setOrders(data);
-    setLoading(false);
+  const [search, setSearch] = useState("");
+  const [prevOrders, setPrevOrders] = useState<string[]>([]);
+  const isNewOrder = (id: string) => {
+    return !prevOrders.includes(id);
   };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const res = await fetch("/api/order?time=" + Date.now(), {
+        cache: "no-store",
+      });
 
-  fetchOrders(); // first load
+      const data = await res.json();
 
-  const interval = setInterval(fetchOrders, 5000); // auto refresh
+      // 🔥 Detect new orders
+      const newOrders = data.filter(
+        (order: Order) => !prevOrders.includes(order._id),
+      );
 
-  return () => clearInterval(interval);
-}, []);
+      if (prevOrders.length > 0 && newOrders.length > 0) {
+        // 🔔 Play sound
+        const audio = new Audio("/notification.mp3");
+        audio.play();
+
+        console.log("New Order Received!");
+      }
+
+      setOrders(data);
+      setPrevOrders(data.map((order: Order) => order._id));
+      setLoading(false);
+    };
+
+    fetchOrders();
+
+    const interval = setInterval(fetchOrders, 5000);
+
+    return () => clearInterval(interval);
+  }, [prevOrders]);
 
   if (loading) {
     return <p className="p-10">Loading orders...</p>;
@@ -67,16 +86,39 @@ export default function AdminOrdersPage() {
       console.error("Status update error:", error);
     }
   };
+  const filteredOrders = orders.filter((order) => {
+    const value = search.toLowerCase();
 
+    return (
+      order.status.toLowerCase().includes(value) ||
+      order.customerName?.toLowerCase().includes(value) ||
+      order.email.toLowerCase().includes(value)
+    );
+  });
   return (
     <div className="p-10">
       <h1 className="text-2xl font-bold mb-6">Admin Orders</h1>
 
       {orders.length === 0 && <p>No orders found</p>}
 
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by status, name or email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full border p-3 rounded-lg"
+        />
+      </div>
+
       <div className="space-y-6">
-        {orders.map((order) => (
-          <div key={order._id} className="border p-5 rounded-xl">
+        {filteredOrders.map((order) => (
+          <div
+            key={order._id}
+            className={`border p-5 rounded-xl ${
+              isNewOrder(order._id) ? "border-green-500 bg-green-50" : ""
+            }`}
+          >
             {/* Customer */}
             <h2 className="font-bold text-lg">
               {order.customerName || "No Name"}

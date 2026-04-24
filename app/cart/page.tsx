@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function CartPage() {
   const { cart, removeFromCart, clearCart, updateQuantity } =
     useCartStore();
-  // Total Price Calculate karna
+  
   const totalPrice = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,

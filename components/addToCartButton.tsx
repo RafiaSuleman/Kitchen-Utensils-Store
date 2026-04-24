@@ -19,7 +19,6 @@ export default function AddToCartBtn({ product }: { product: Product }) {
       imageUrl: product.imageUrl,
       quantity: 1,
     });
-    alert(`${product.name} added to cart!`);
   };
 
   return (
