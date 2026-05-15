@@ -1,3 +1,4 @@
+import ChatWidget from "@/components/ChatWidget";
 import Hero from "@/components/hero";
 import { getProducts } from "@/sanity/lib/getProducts";
 import { urlFor } from "@/sanityImage";
@@ -19,6 +20,7 @@ export default async function Home() {
   return (
     <div className="bg-[#DAE2E9]">
       <Hero />
+      <ChatWidget />
       {/* sanity */}
       <div className="p-10">
         <h1 className="text-3xl font-bold mb-6">Our Products</h1>
