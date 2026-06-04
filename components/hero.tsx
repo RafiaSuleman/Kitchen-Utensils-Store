@@ -30,7 +30,7 @@ const Hero = () => {
         </p>
 
         <Link
-          href="/products"
+            href="#products"
           className="bg-[#915719] hover:bg-[#7a4a15] transition text-white text-sm px-6 py-3 rounded-lg"
         >
           Shop Now

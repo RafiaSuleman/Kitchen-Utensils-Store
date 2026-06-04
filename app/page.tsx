@@ -1,10 +1,9 @@
 import ChatWidget from "@/components/ChatWidget";
 import Hero from "@/components/hero";
 import { getProducts } from "@/sanity/lib/getProducts";
-import { urlFor } from "@/sanityImage";
-import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
 import Link from "next/link";
-
+import ProductGrid from "@/components/productGrid";
 const categories = ["kitchen", "electronics", "accessories"];
 
 type Product = {
@@ -16,7 +15,7 @@ type Product = {
 
 export default async function Home() {
   const products = await getProducts();
-  
+
   return (
     <div className="bg-[#DAE2E9]">
       <Hero />
@@ -32,33 +31,10 @@ export default async function Home() {
               </button>
             </Link>
           ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
-          {products.map((item: Product) => (
-            <div key={item.slug} className="bg-white shadow rounded-lg p-4">
-              <Image
-                src={urlFor(item.imageUrl).width(500).height(300).url()}
-                alt={item.name}
-                width={500}
-                height={300}
-                className="w-full h-48 object-cover rounded border-[#C78238] border"
-              />
-
-              <h2 className="text-lg font-bold mt-3">{item.name}</h2>
-
-              <p className="text-[#C78238] font-semibold">
-                Price ${item.price}
-              </p>
-              <Link
-                href={`/product/${item.slug}`}
-                className="text-white  mt-2 block bg-[#C78238] py-2 px-4 rounded w-max text-center"
-              >
-                View Details
-              </Link>
-            </div>
-          ))}
-        </div>
+        </div>        
+          {/* Our Products */}
+         <ProductGrid products={products} urlFor={urlFor} />
+       
       </div>
     </div>
   );
